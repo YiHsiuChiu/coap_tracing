@@ -1,0 +1,3 @@
+{"traceId":"b9a0cffcce4f810069fa54f3fe16e806","spanId":"744c0d06d4392d28","parentSpanId":"c3e7a37afa5be274","operationName":"Gateway","startTime":1737621592544,"endTime":1737621592896,"tags":{},"logs":[]},
+{"traceId":"b9a0cffcce4f810069fa54f3fe16e806","spanId":"9ffc66d38963ff05","parentSpanId":"744c0d06d4392d28","operationName":"Server A","startTime":1737621592549,"endTime":1737621592887,"tags":{},"logs":[]},
+{"traceId":"b9a0cffcce4f810069fa54f3fe16e806","spanId":"c3e7a37afa5be274","parentSpanId":null,"operationName":"HTTP Client","startTime":1737621592538,"endTime":1737621592900,"tags":{},"logs":[]}
