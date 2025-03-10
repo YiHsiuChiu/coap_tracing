@@ -6,8 +6,8 @@ COPY . .
 RUN apk add --no-cache iproute2 \
     && npm install --production
 
-COPY entrypoint.sh /usr/src/app/entrypoint.sh
+# COPY entrypoint.sh /usr/src/app/entrypoint.sh
 
-RUN chmod +x /usr/src/app/entrypoint.sh
-
-CMD ["/usr/src/app/entrypoint.sh", "node", "coapServerA.js"]
+# RUN chmod +x /usr/src/app/entrypoint.sh
+CMD ["node", "coapServerA.js"]
+# CMD ["/usr/src/app/entrypoint.sh", "node", "coapServerA.js"]
