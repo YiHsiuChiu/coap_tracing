@@ -1,7 +1,13 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 import { randomBytes } from "k6/crypto";
-
+export const options = {
+    stages: [
+      { duration: '10s', target: 20 },  // 10秒內爬升到10個虛擬使用者(VUs)
+      { duration: '30s', target: 20 },  // 接著在10 VUs 持續30秒
+      { duration: '10s', target: 0 },   // 最後10秒內降回0
+    ],
+  };
 export default function () {
   const traceId = randomBytes(16, "hex");
   const spanId = randomBytes(8, "hex");
