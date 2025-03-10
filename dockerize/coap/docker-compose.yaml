@@ -15,6 +15,8 @@ services:
       - SPAN_HANDLER_PORT=3333
       - IOT_SERVER_A_PORT=5683
       - IOT_SERVER_A_HOST=coap-iot-server-a
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 
   iot-server-a:
@@ -42,6 +44,8 @@ services:
       - GATEWAY_PORT=3000
       - SPAN_HANDLER_HOST=host.docker.internal
       - SPAN_HANDLER_PORT=3333
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   coap-span-handler:
     build: ./spanHandler
