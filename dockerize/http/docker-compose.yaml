@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  http-gateway:
+    build: ./gateway
+    container_name: http-gateway
+    networks:
+      http-iot-network:
+      http-client-network:
+    ports:
+      - "4000:4000"  # 映射 HTTP port (client -> Gateway)
+      - "4001:4001"  # 映射 Span Collector port
+    environment:
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=4444
+      - IOT_SERVER_A_PORT=4002
+      - IOT_SERVER_A_HOST=http-iot-device-a
+
+
+  http-iot-device-a:
+    build: ./iotDevice
+    container_name: http-iot-device-a
+    networks:
+      http-iot-network:
+    environment:
+      - IOT_SERVER_A_PORT=4002
+      - GATEWAY_PORT=4001
+      - GATEWAY_HOST=http-gateway
+
+  http-client:
+    build: ./httpClient
+    container_name: http-client
+    networks:
+      http-client-network:
+    depends_on:
+      - http-gateway
+    environment:
+      - GATEWAY_HOST=http-gateway
+      - GATEWAY_PORT=4000
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=4444
+
+  http-span-handler:
+    build: ./spanHandler
+    container_name: http-span-handler
+    networks:
+      http-tracing-network:
+    environment:
+      - SPAN_HANDLER_PORT=4444
+    ports:
+      - "4444:4444"
+    volumes:
+      - http-span-data:/app
+
+networks:
+  http-iot-network:
+    driver: bridge
+  http-client-network:
+    driver: bridge
+  http-tracing-network:
+    driver: bridge
+
+volumes:
+  http-span-data:
