@@ -8,7 +8,8 @@ BURST="32kbit"
 LAT="400ms"
 
 echo "1) Starting Docker Compose..."
-docker-compose up -d
+docker compose -f ./coap/docker-compose.yaml up -d --build
+docker compose -f ./http/docker-compose.yaml up -d --build
 
 echo "2) Finding Bridge Interface for $NETWORK_NAME..."
 # 取得 Network ID
