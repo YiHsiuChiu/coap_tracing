@@ -4,4 +4,12 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["node", "gateway.js"]
+# 安裝 tc 相關指令
+RUN apk add --no-cache iproute2 \
+    && npm install --production
+
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# CMD ["node", "gateway.js"]
+ENTRYPOINT ["/entrypoint.sh"]

@@ -4,8 +4,12 @@ services:
   http-gateway:
     build: ./gateway
     container_name: http-gateway
+    cap_add:
+      - NET_ADMIN  # 需要網路管理權限 方便設定 TBF
+    privileged: true
     networks:
       http-iot-network:
+        ipv4_address: 172.40.0.2
       http-client-network:
     ports:
       - "4000:4000"  # 映射 HTTP port (client -> Gateway)
@@ -24,6 +28,7 @@ services:
     container_name: http-iot-device-a
     networks:
       http-iot-network:
+         ipv4_address: 172.40.0.10
     environment:
       - IOT_SERVER_A_PORT=4002
       - GATEWAY_PORT=4001
@@ -59,6 +64,10 @@ services:
 networks:
   http-iot-network:
     driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.40.0.0/24
   http-client-network:
     driver: bridge
   http-tracing-network:
