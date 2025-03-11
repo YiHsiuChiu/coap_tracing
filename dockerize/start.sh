@@ -62,5 +62,6 @@ sudo tc qdisc add dev "$HTTP_BR_IF" root tbf rate $RATE burst $BURST latency $LA
 
 echo "4) Verification"
 sudo tc -s qdisc show dev "$COAP_BR_IF"
+sudo tc -s qdisc show dev "$HTTP_BR_IF"
 
 echo "All done! iot network now limited to $RATE"
