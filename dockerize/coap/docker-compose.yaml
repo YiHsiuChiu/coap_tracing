@@ -4,8 +4,13 @@ services:
   coap-gateway:
     build: ./gateway
     container_name: coap-gateway
+    cap_add:
+      - NET_ADMIN  # 需要網路管理權限 方便設定 TBF
+    privileged: true
     networks:
+      #eth1 Docker 沒有保證「第一個網路一定掛 eth0，第二個網路一定掛 eth1」。
       coap-iot-network:
+        ipv4_address: 172.30.0.1
       coap-client-network:
     ports:
       - "3000:3000"  # 映射 HTTP port (client -> Gateway)
@@ -27,9 +32,11 @@ services:
     privileged: true
     networks:
       coap-iot-network:
+        ipv4_address: 172.30.0.10
     environment:
       - IOT_SERVER_A_PORT=5683
       - GATEWAY_PORT=3001
+      # 可能要改
       - GATEWAY_HOST=coap-gateway
 
   coap-http-client:
@@ -62,10 +69,15 @@ services:
 networks:
   coap-iot-network:
     driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
   coap-client-network:
     driver: bridge
   coap-tracing-network:
     driver: bridge
+  
 
 volumes:
   coap-span-data:
