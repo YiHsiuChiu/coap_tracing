@@ -26,6 +26,9 @@ services:
   http-iot-device-a:
     build: ./iotDevice
     container_name: http-iot-device-a
+    cap_add:
+      - ALL
+    privileged: true
     networks:
       http-iot-network:
          ipv4_address: 172.40.0.10
