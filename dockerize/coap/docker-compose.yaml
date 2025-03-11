@@ -10,7 +10,7 @@ services:
     networks:
       #eth1 Docker 沒有保證「第一個網路一定掛 eth0，第二個網路一定掛 eth1」。
       coap-iot-network:
-        ipv4_address: 172.30.0.1
+        ipv4_address: 172.30.0.2
       coap-client-network:
     ports:
       - "3000:3000"  # 映射 HTTP port (client -> Gateway)
