@@ -75,5 +75,5 @@ GATEWAY_AVG_MEM=$(awk -F, 'NR>1 {sum+=$3; count++} END {if(count>0) printf "%.2f
 echo "HTTP IoT 在壓測期間平均 CPU 使用量：$IOT_AVG_CPU%"
 echo "HTTP IoT 在壓測期間平均記憶體使用量：$IOT_AVG_MEM MiB"
 
-echo "HTTP Gateway 在壓測期間平均 CPU 使用量：$IOT_AVG_CPU%"
-echo "HTTP Gateway 在壓測期間平均記憶體使用量：$IOT_AVG_MEM MiB"
+echo "HTTP Gateway 在壓測期間平均 CPU 使用量：$GATEWAY_AVG_CPU%"
+echo "HTTP Gateway 在壓測期間平均記憶體使用量：$GATEWAY_AVG_MEM MiB"
