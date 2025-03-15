@@ -1,6 +1,6 @@
 const coap = require('coap');
 const Span = require('./utils/span.js');
-const sleep = require('sleep-promise');
+// const sleep = require('sleep-promise');
 const SERVER_A_PORT = process.env.IOT_SERVER_A_PORT;
 
 function sendSpan(spanData) {
@@ -33,7 +33,7 @@ const serverA = coap.createServer(async (req, res) => {
     // console.log(`Server A received request: ${req.url}`);
 
     // random delay (300-1000ms)
-    await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
+    // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
 
     // payload 縮小
     res.end('Hello http client!');

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "coap": "^1.4.0",
-    "sleep-promise": "^9.1.0"
+    "coap": "^1.4.0"
   }
 }

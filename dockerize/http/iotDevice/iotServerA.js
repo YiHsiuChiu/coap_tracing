@@ -1,6 +1,6 @@
 const http = require('http');
 const Span = require('./utils/span.js');
-const sleep = require('sleep-promise');
+// const sleep = require('sleep-promise');
 const { sendSpanToGateway } = require('./utils/sendSpan.js');
 const SERVER_A_PORT = process.env.IOT_SERVER_A_PORT;
 
@@ -12,7 +12,7 @@ const serverA = http.createServer(async (req, res) => {
     
 
     // random delay (300-1000ms)
-    await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
+    // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write(`Hello http client, I am IoT Server A!`);
     res.end(`Hello http client, I am IoT Server A!`);

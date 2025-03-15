@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY . .
 RUN apk add --no-cache iproute2 \
-    && apk add --no-cache iperf3 \
-    && npm install --production
+    && apk add --no-cache iperf3
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
