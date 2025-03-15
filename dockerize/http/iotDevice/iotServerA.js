@@ -7,7 +7,7 @@ const SERVER_A_PORT = process.env.IOT_SERVER_A_PORT;
 
 const serverA = http.createServer(async (req, res) => {
   if (req.method === 'GET') {
-    console.log(`[Server A] Received GET ${req.url}`);
+    // console.log(`[Server A] Received GET ${req.url}`);
     const span = new Span('Gateway-HTTP', req.headers.traceparent);
     
 

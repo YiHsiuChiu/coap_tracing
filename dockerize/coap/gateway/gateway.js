@@ -5,7 +5,7 @@ async function main() {
   await startHttpServer(3000);
   await startCoapSpanCollector(3001);
 
-  console.log("Gateway (HTTP + CoAP) is up and running!");
+  // console.log("Gateway (HTTP + CoAP) is up and running!");
 }
 
 main().catch(err => {
