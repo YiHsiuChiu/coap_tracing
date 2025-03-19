@@ -20,7 +20,7 @@ services:
       - SPAN_HANDLER_PORT=5555
       - IOT_SERVER_A_PORT=5685
       - IOT_SERVER_A_HOST=opt-iot-server-a
-      - OPT_NUM=65002
+      - OPT_NUM=2132
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -38,7 +38,7 @@ services:
       - IOT_SERVER_A_PORT=5685
       - GATEWAY_PORT=5001
       - GATEWAY_HOST=opt-gateway
-      - OPT_NUM=65002
+      - OPT_NUM=2132
 
   opt-http-client:
     build: ./httpClient
