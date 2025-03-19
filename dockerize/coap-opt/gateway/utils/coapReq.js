@@ -14,7 +14,7 @@ function coapRequest(options) {
       port: options.port,
       method: options.method,
       pathname: options.pathname,
-      confirmable: true,
+      token: options.token
     });
     if(options.options.length > 0){
       // 因實驗情境不考慮tracestate，所以只用第一個option
