@@ -3,7 +3,7 @@ const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
 
 function startCoapSpanCollector(port, traceMap) {
   return new Promise((resolve, reject) => {
-    coap.registerOption("2132", Buffer.from, (buf) => buf.toString());
+    coap.registerOption(process.env.OPT_NUM, Buffer.from, (buf) => buf.toString());
 
     const server = coap.createServer(async (req, res) => {
       console.log('Gateway CoAP Span Collector received:', req.method, req.url);

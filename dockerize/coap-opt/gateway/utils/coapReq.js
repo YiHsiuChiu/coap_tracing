@@ -6,7 +6,7 @@ function toBinary(text) {
 function toString(data) {
   return data.toString()
 }
-coap.registerOption("2132", toBinary, toString)
+coap.registerOption(process.env.OPT_NUM, toBinary, toString)
 function coapRequest(options) {
   return new Promise((resolve, reject) => {
     const req = coap.request({
