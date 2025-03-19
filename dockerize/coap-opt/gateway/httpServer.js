@@ -3,7 +3,8 @@ const Span = require('./utils/span.js');
 const { coapRequest } = require('./utils/coapReq.js');
 const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
 
-function startHttpServer(port) {
+
+function startHttpServer(port, traceMap) {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
       // console.log('Gateway HTTP received:', req.method, req.url);
@@ -16,14 +17,16 @@ function startHttpServer(port) {
             port: process.env.IOT_SERVER_A_PORT,
             method: 'GET',
             pathname: '/test',
-            options: []
+            token: Buffer.from(span.getSpanId(), 'hex'),
+            options: [{ name: "2132", value: span.getTraceId().slice(-8) }]
           };
-          if (req.headers.traceparent) {
-            coapOpts.options.push({ name: "2076", value: span.getTraceParent() });
-          }
-          // if (req.headers.tracestate) {
-          //   coapOpts.options.push({ name: "2104", value: req.headers.tracestate });
+          // if (req.headers.traceparent) {
+          //   coapOpts.options.push({ name: "65000", value: span.getTraceParent() });
           // }
+          // if (req.headers.tracestate) {
+          //   coapOpts.options.push({ name: "65001", value: req.headers.tracestate });
+          // }
+          traceMap.set(span.getTraceId().slice(-8), span.getTraceId());
           const coapResp = await coapRequest(coapOpts);
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end(`Got from CoAP Server: ${coapResp}`);

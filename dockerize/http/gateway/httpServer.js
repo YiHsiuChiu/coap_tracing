@@ -18,8 +18,7 @@ function startHttpServer(port) {
             path: '/test',
             headers: {
               ...req.headers,
-              traceparent: span.getTraceParent(),
-              tracestate: req.headers.tracestate || 'rojo=00f067aa0ba902b7,congo=t61rcWkgMzE',
+              traceparent: span.getTraceParent()
             }
           };
           

@@ -14,8 +14,8 @@ const serverA = http.createServer(async (req, res) => {
     // random delay (300-1000ms)
     // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.write(`Hello http client, I am IoT Server A!`);
-    res.end(`Hello http client, I am IoT Server A!`);
+    res.write(`a`);
+    res.end(`a`);
     span.addEndTime();
     await sendSpanToGateway(span).catch(err => console.error("Failed sending span:", err));
   } else {

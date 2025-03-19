@@ -1,6 +1,5 @@
 const coap = require('coap');
-const Span = require('./utils/span.js');
-// const sleep = require('sleep-promise');
+const ISpan = require('./utils/iotSpan.js');
 const SERVER_A_PORT = process.env.IOT_SERVER_A_PORT;
 
 function sendSpan(spanData) {
@@ -26,18 +25,13 @@ function sendSpan(spanData) {
 }
 const serverA = coap.createServer(async (req, res) => {
   if (req.method === 'GET') {
-
-    const traceparentOption = req.options.find(opt => opt.name === '2076');
-    const traceparent = traceparentOption ? traceparentOption.value.toString() : null;
-    const span = new Span('Server A', traceparent);
-    // console.log(`Server A received request: ${req.url}`);
-
-    // random delay (300-1000ms)
-    // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
+    let span = new ISpan('Server A', req.options.find(option => option.name == '2132').value.toString(), req._packet.token.toString('hex'));
+    console.log(`Server A received request: ${req.url}`);
 
     // payload 縮小
     res.end('a');
     span.addEndTime();
+    span.logSpan();
     sendSpan(span).catch(err => console.error("Failed sending span:", err));
   } else {
     res.code = '4.05';

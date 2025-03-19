@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  opt-gateway:
+    build: ./gateway
+    container_name: opt-gateway
+    cap_add:
+      - NET_ADMIN  # 需要網路管理權限 方便設定 TBF
+    privileged: true
+    networks:
+      #eth1 Docker 沒有保證「第一個網路一定掛 eth0，第二個網路一定掛 eth1」。
+      opt-iot-network:
+        ipv4_address: 172.50.0.2
+      opt-client-network:
+    ports:
+      - "5000:5000"  # 映射 HTTP port (client -> Gateway)
+      - "5001:5001"  # 映射 Span Collector port
+    environment:
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=5555
+      - IOT_SERVER_A_PORT=5685
+      - IOT_SERVER_A_HOST=opt-iot-server-a
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+
+  opt-iot-server-a:
+    build: ./coapServer
+    cap_add:
+      - ALL
+    container_name: opt-iot-server-a
+    privileged: true
+    networks:
+      opt-iot-network:
+        ipv4_address: 172.50.0.10
+    environment:
+      - IOT_SERVER_A_PORT=5685
+      - GATEWAY_PORT=5001
+      - GATEWAY_HOST=opt-gateway
+
+  opt-http-client:
+    build: ./httpClient
+    container_name: opt-http-client
+    networks:
+      opt-client-network:
+    depends_on:
+      - opt-gateway
+    environment:
+      - GATEWAY_HOST=opt-gateway
+      - GATEWAY_PORT=5000
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=5555
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  opt-span-handler:
+    build: ./spanHandler
+    container_name: opt-span-handler
+    networks:
+      opt-tracing-network:
+    environment:
+      - SPAN_HANDLER_PORT=5555
+    ports:
+      - "5555:5555"
+    volumes:
+      - opt-span-data:/app
+
+networks:
+  opt-iot-network:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.50.0.0/24
+  opt-client-network:
+    driver: bridge
+  opt-tracing-network:
+    driver: bridge
+  
+
+volumes:
+  opt-span-data:

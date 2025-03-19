@@ -7,7 +7,8 @@ async function httpClient(options, data = null) {
 
   options.headers = {
     ...options.headers,
-    traceparent: span.getTraceParent()
+    traceparent: span.getTraceParent(),
+    tracestate: 'rojo=00f067aa0ba902b7,congo=t61rcWkgMzE'
   };
 
   return new Promise((resolve, reject) => {
