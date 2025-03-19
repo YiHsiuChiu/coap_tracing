@@ -7,10 +7,9 @@ const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
 function startHttpServer(port, traceMap) {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
-      // console.log('Gateway HTTP received:', req.method, req.url);
+      console.log('Gateway HTTP received:', req.method, req.url, req.headers.traceparent);
       try {
         const span = new Span('Gateway-HTTP', req.headers.traceparent);
-        
         if (req.url.startsWith('/iot-test')) {
           const coapOpts = {
             hostname: process.env.IOT_SERVER_A_HOST,
@@ -20,6 +19,7 @@ function startHttpServer(port, traceMap) {
             token: Buffer.from(span.getSpanId(), 'hex'),
             options: [{ name: "2132", value: span.getTraceId().slice(-8) }]
           };
+          console.log("check: ", span.getTraceId(), span.getTraceId().slice(-8), coapOpts.options[0].name, coapOpts.options[0].value, coapOpts);
           // if (req.headers.traceparent) {
           //   coapOpts.options.push({ name: "65000", value: span.getTraceParent() });
           // }

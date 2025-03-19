@@ -22,9 +22,11 @@ function coapRequest(options) {
     }
     
     req.on('response', (res) => {
-      let payload = '';
-      res.on('data', chunk => payload += chunk);
-      res.on('end', () => resolve(payload));
+      let responseBody = res.payload.toString()
+      resolve(responseBody)
+      // let payload = '';
+      // res.on('data', chunk => payload += chunk);
+      // res.on('end', () => resolve(payload));
     });
     req.on('error', (err) => reject(err));
     req.end();

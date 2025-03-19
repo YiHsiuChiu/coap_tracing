@@ -26,7 +26,7 @@ function sendSpan(spanData) {
 const serverA = coap.createServer(async (req, res) => {
   if (req.method === 'GET') {
     let span = new ISpan('Server A', req.options.find(option => option.name == '2132').value.toString(), req._packet.token.toString('hex'));
-    console.log(`Server A received request: ${req.url}`);
+    console.log(`Server A received request: ${req.url},${req.options.find(option => option.name == '2132').value.toString()},${req._packet.token.toString('hex')}`);
 
     // payload 縮小
     res.end('a');
