@@ -5,7 +5,7 @@ async function main() {
   await startHttpServer(4000);
   await startHTTPSpanCollector(4001);
 
-  console.log("Gateway (HTTP + Span Collector) is up and running!");
+  // console.log("Gateway (HTTP + Span Collector) is up and running!");
 }
 
 main().catch(err => {

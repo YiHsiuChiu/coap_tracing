@@ -7,8 +7,7 @@ async function httpClient(options, data = null) {
 
   options.headers = {
     ...options.headers,
-    traceparent: span.getTraceParent(),
-    tracestate: 'rojo=00f067aa0ba902b7,congo=t61rcWkgMzE'
+    traceparent: span.getTraceParent()
   };
 
   return new Promise((resolve, reject) => {
@@ -45,7 +44,7 @@ async function httpClient(options, data = null) {
 
   try {
     const response = await httpClient(options);
-    console.log('HTTP Client received response:', response);
+    // console.log('HTTP Client received response:', response);
   } catch (error) {
     console.error('HTTP Client Error:', error);
   }

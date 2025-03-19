@@ -42,7 +42,7 @@ async function sendSpanToGateway(span) {
 
     req.write(data);
     req.end();
-    console.log("[Server A] Send span to Gateway's collector");
+    // console.log("[Server A] Send span to Gateway's collector");
   });
 }
 

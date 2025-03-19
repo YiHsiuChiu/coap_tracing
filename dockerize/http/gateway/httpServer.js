@@ -6,7 +6,7 @@ const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
 function startHttpServer(port) {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
-      console.log('[Gateway] Received request:', req.method, req.url);
+      // console.log('[Gateway] Received request:', req.method, req.url);
       try {
         const span = new Span('Gateway-HTTP', req.headers.traceparent);
         
@@ -18,8 +18,7 @@ function startHttpServer(port) {
             path: '/test',
             headers: {
               ...req.headers,
-              traceparent: span.getTraceParent(),
-              tracestate: req.headers.tracestate || 'rojo=00f067aa0ba902b7,congo=t61rcWkgMzE',
+              traceparent: span.getTraceParent()
             }
           };
           

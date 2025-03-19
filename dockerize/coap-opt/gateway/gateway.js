@@ -1,9 +1,11 @@
 const { startHttpServer } = require('./httpServer.js');
 const { startCoapSpanCollector } = require('./coapSpanCollectorServer.js');
 
+let traceMap = new Map();
 async function main() {
-  await startHttpServer(3000);
-  await startCoapSpanCollector(3001);
+  
+  await startHttpServer(5000, traceMap);
+  await startCoapSpanCollector(5001, traceMap);
 
   // console.log("Gateway (HTTP + CoAP) is up and running!");
 }
