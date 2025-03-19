@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-ip route add default via 172.50.0.2 dev eth0
+ip route add default via 172.31.0.2 dev eth0
 
 # egress TBF for 雙向
 tc qdisc del dev eth0 root 2>/dev/null || true
