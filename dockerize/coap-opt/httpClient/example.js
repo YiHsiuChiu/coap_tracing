@@ -44,6 +44,7 @@ async function httpClient(options, data = null) {
   };
 
   try {
+    console.log('HTTP Client sending request:', options);
     const response = await httpClient(options);
     console.log('HTTP Client received response:', response);
   } catch (error) {
