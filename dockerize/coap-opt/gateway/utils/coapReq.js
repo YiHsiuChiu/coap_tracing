@@ -14,11 +14,12 @@ function coapRequest(options) {
       port: options.port,
       method: options.method,
       pathname: options.pathname,
-      token: options.token
+      token: options.token,
+      confirmable: true
     });
-    if(options.options.length > 0){
+    if(options.options.value){
       // 因實驗情境不考慮tracestate，所以只用第一個option
-      req.setOption(options.options[0].name, options.options[0].value);
+      req.setOption(options.options.name, options.options.value);
     }
     
     req.on('response', (res) => {

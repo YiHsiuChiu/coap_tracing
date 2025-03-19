@@ -18,7 +18,7 @@ services:
     environment:
       - SPAN_HANDLER_HOST=host.docker.internal
       - SPAN_HANDLER_PORT=5555
-      - IOT_SERVER_A_PORT=5685
+      - IOT_SERVER_A_PORT=6000
       - IOT_SERVER_A_HOST=opt-iot-server-a
       - OPT_NUM=2132
     extra_hosts:
@@ -35,7 +35,7 @@ services:
       opt-iot-network:
         ipv4_address: 172.50.0.10
     environment:
-      - IOT_SERVER_A_PORT=5685
+      - IOT_SERVER_A_PORT=6000
       - GATEWAY_PORT=5001
       - GATEWAY_HOST=opt-gateway
       - OPT_NUM=2132

@@ -17,7 +17,7 @@ function startHttpServer(port, traceMap) {
             method: 'GET',
             pathname: '/test',
             token: Buffer.from(span.getSpanId(), 'hex'),
-            options: [{ name: process.env.OPT_NUM, value: span.getTraceId().slice(-8) }]
+            options: { name: process.env.OPT_NUM, value: span.getTraceId().slice(-8) }
           };
           // if (req.headers.traceparent) {
           //   coapOpts.options.push({ name: "65000", value: span.getTraceParent() });
