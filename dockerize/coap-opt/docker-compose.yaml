@@ -48,7 +48,7 @@ services:
     depends_on:
       - opt-gateway
     environment:
-      - GATEWAY_HOST=172.21.0.2
+      - GATEWAY_HOST=opt-gateway
       - GATEWAY_PORT=5000
       - SPAN_HANDLER_HOST=host.docker.internal
       - SPAN_HANDLER_PORT=5555
