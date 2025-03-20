@@ -23,6 +23,12 @@ services:
       - OPT_NUM=2132
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]  # 或改成適合的檢查指令
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
 
   opt-iot-server-a:
@@ -46,7 +52,8 @@ services:
     networks:
       opt-client-network:
     depends_on:
-      - opt-gateway
+      opt-gateway:
+        condition: service_healthy
     environment:
       - GATEWAY_HOST=opt-gateway
       - GATEWAY_PORT=5000
