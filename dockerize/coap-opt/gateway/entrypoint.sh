@@ -1,8 +1,11 @@
 #!/bin/sh
 set -e
 
-# 1) 開啟路由轉發
+# 1) 開啟路由轉發 這樣 Gateway 容器才會把收到的封包進行 Layer 3 轉發。
 echo 1 > /proc/sys/net/ipv4/ip_forward
+# 為了讓 Gateway 容器可以對同一個 subnet 上的其他容器 IP 做 ARP 代理（避免 ARP 失敗）
+echo 1 > /proc/sys/net/ipv4/conf/all/proxy_arp
+
 
 # 找到綁在 172.31.0.2 這個 IP 的介面名稱
 IFACE=$(ip -o addr show | grep "172.31.0.2" | awk '{print $2}')
