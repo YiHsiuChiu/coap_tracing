@@ -10,6 +10,7 @@ function toString(data) {
 coap.registerOption(process.env.OPT_NUM, toBinary, toString)
 function coapRequest(options) {
   return new Promise((resolve, reject) => {
+    console.log("test", options)
     const req = coap.request({
       hostname: options.hostname,
       port: options.port,
