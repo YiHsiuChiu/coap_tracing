@@ -8,6 +8,7 @@ function toString(data) {
 }
 coap.registerOption(process.env.OPT_NUM, toBinary, toString)
 function coapRequest(options) {
+  console.log("coapRequest before");
   return new Promise((resolve, reject) => {
     const req = coap.request({
       hostname: options.hostname,
@@ -17,6 +18,7 @@ function coapRequest(options) {
       token: options.token,
       confirmable: true
     });
+    console.log("coapRequest after");
     if(options.options.value){
       // 因實驗情境不考慮tracestate，所以只用第一個option
       req.setOption(options.options.name, options.options.value);
