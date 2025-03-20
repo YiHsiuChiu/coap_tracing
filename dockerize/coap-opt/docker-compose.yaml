@@ -25,10 +25,10 @@ services:
       - "host.docker.internal:host-gateway"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
-      interval: 10s
-      timeout: 8s
-      retries: 5
-      start_period: 30s
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 10s
 
 
   opt-iot-server-a:
