@@ -1,4 +1,5 @@
 const coap = require('coap');
+
 function toBinary(text) {
   return Buffer.from(text);
 }
@@ -8,7 +9,6 @@ function toString(data) {
 }
 coap.registerOption(process.env.OPT_NUM, toBinary, toString)
 function coapRequest(options) {
-  console.log("coapRequest before");
   return new Promise((resolve, reject) => {
     const req = coap.request({
       hostname: options.hostname,
@@ -18,7 +18,6 @@ function coapRequest(options) {
       token: options.token,
       confirmable: true
     });
-    console.log("coapRequest after");
     if(options.options.value){
       // 因實驗情境不考慮tracestate，所以只用第一個option
       req.setOption(options.options.name, options.options.value);
@@ -27,6 +26,7 @@ function coapRequest(options) {
     req.on('response', (res) => {
       // let responseBody = res.payload.toString()
       // resolve(responseBody)
+      console.log("test res from")
       let payload = '';
       res.on('data', chunk => payload += chunk);
       res.on('end', () => resolve(payload));

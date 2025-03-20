@@ -34,6 +34,7 @@ const serverA = coap.createServer(async (req, res) => {
     span.logSpan();
     sendSpan(span).catch(err => console.error("Failed sending span:", err));
   } else {
+    console.log("test req stram")
     res.code = '4.05';
     res.end('Method Not Allowed');
   }
