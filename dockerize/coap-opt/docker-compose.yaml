@@ -24,11 +24,11 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]  # 或改成適合的檢查指令
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 10s
-      timeout: 5s
-      retries: 8
-      start_period: 10s
+      timeout: 8s
+      retries: 5
+      start_period: 30s
 
 
   opt-iot-server-a:
