@@ -15,7 +15,7 @@ function startHttpServer(port, traceMap) {
             hostname: process.env.IOT_SERVER_A_HOST,
             port: process.env.IOT_SERVER_A_PORT,
             method: 'GET',
-            pathname: '/test',
+            pathname: '/',
             token: Buffer.from(span.getSpanId(), 'hex'),
             options: { name: process.env.OPT_NUM, value: span.getTraceId().slice(-8) }
           };
