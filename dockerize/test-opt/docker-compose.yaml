@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+  coap-gateway:
+    build: ./gateway
+    container_name: coap-gateway
+    cap_add:
+      - NET_ADMIN  # 需要網路管理權限 方便設定 TBF
+    privileged: true
+    networks:
+      #eth1 Docker 沒有保證「第一個網路一定掛 eth0，第二個網路一定掛 eth1」。
+      coap-iot-network:
+        ipv4_address: 172.30.0.2
+      coap-client-network:
+    ports:
+      - "3000:3000"  # 映射 HTTP port (client -> Gateway)
+      - "3001:3001"  # 映射 Span Collector port
+    environment:
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=3333
+      - IOT_SERVER_A_PORT=5683
+      - IOT_SERVER_A_HOST=coap-iot-server-a
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 10s
+
+
+  iot-server-a:
+    build: ./coapServer
+    cap_add:
+      - ALL
+    container_name: coap-iot-server-a
+    privileged: true
+    networks:
+      coap-iot-network:
+        ipv4_address: 172.30.0.10
+    environment:
+      - IOT_SERVER_A_PORT=5683
+      - GATEWAY_PORT=3001
+      # 可能要改
+      - GATEWAY_HOST=coap-gateway
+
+  coap-http-client:
+    build: ./httpClient
+    container_name: coap-http-client
+    networks:
+      coap-client-network:
+    depends_on:
+      coap-gateway:
+        condition: service_healthy
+    environment:
+      - GATEWAY_HOST=coap-gateway
+      - GATEWAY_PORT=3000
+      - SPAN_HANDLER_HOST=host.docker.internal
+      - SPAN_HANDLER_PORT=3333
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  coap-span-handler:
+    build: ./spanHandler
+    container_name: coap-span-handler
+    networks:
+      coap-tracing-network:
+    environment:
+      - SPAN_HANDLER_PORT=3333
+    ports:
+      - "3333:3333"
+    volumes:
+      - coap-span-data:/app
+
+networks:
+  coap-iot-network:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+  coap-client-network:
+    driver: bridge
+  coap-tracing-network:
+    driver: bridge
+  
+
+volumes:
+  coap-span-data:
