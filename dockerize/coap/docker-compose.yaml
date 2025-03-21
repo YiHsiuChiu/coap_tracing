@@ -22,6 +22,12 @@ services:
       - IOT_SERVER_A_HOST=coap-iot-server-a
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      timeout: 2s
+      retries: 3
+      start_period: 10s
 
 
   iot-server-a:
@@ -45,7 +51,8 @@ services:
     networks:
       coap-client-network:
     depends_on:
-      - coap-gateway
+      coap-gateway:
+        condition: service_healthy
     environment:
       - GATEWAY_HOST=coap-gateway
       - GATEWAY_PORT=3000
