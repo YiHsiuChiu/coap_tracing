@@ -19,7 +19,7 @@ function coapRequest(options) {
       token: options.token,
       confirmable: true
     });
-    
+
     if(options.options.value){
       // 因實驗情境不考慮tracestate，所以只用第一個option
       req.setOption(options.options.name, options.options.value);
@@ -35,6 +35,7 @@ function coapRequest(options) {
     });
     req.on('error', (err) => reject(err));
     req.end();
+    console.log("req: ", req)
   });
 }
 

@@ -35,7 +35,6 @@ function coapRequest(options) {
     });
     req.on('error', (err) => reject(err));
     req.end();
-    console.log("req: ", req)
   });
 }
 
