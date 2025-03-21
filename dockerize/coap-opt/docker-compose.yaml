@@ -10,7 +10,7 @@ services:
     networks:
       #eth1 Docker 沒有保證「第一個網路一定掛 eth0，第二個網路一定掛 eth1」。
       opt-iot-network:
-        ipv4_address: 172.31.0.2
+        ipv4_address: 172.50.0.2
       opt-client-network:
     ports:
       - "5000:5000"  # 映射 HTTP port (client -> Gateway)
@@ -39,7 +39,7 @@ services:
     privileged: true
     networks:
       opt-iot-network:
-        ipv4_address: 172.31.0.10
+        ipv4_address: 172.50.0.10
     environment:
       - IOT_SERVER_A_PORT=6000
       - GATEWAY_PORT=5001
@@ -80,7 +80,7 @@ networks:
     internal: true
     ipam:
       config:
-        - subnet: 172.31.0.0/24
+        - subnet: 172.50.0.0/24
   opt-client-network:
     driver: bridge
   opt-tracing-network:
