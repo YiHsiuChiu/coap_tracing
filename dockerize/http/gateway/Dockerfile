@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 # 安裝 tc 相關指令
-RUN apk add --no-cache iproute2 
+RUN apk add --no-cache iproute2 curl
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
