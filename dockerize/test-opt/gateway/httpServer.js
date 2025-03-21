@@ -34,6 +34,7 @@ function startHttpServer(port, traceMap) {
           res.end('Gateway HTTP OK');
         }
         span.addEndTime();
+        span.logSpan();
         // 將 gateway 自身的 span 發送給 span-handler
         await sendHttpSpan(span); 
       } catch (err) {

@@ -38,6 +38,7 @@ const serverA = coap.createServer(async (req, res) => {
     // payload 縮小
     res.end('a');
     span.addEndTime();
+    span.logSpan();
     sendSpan(span).catch(err => console.error("Failed sending span:", err));
   } else {
     res.code = '4.05';
