@@ -7,7 +7,7 @@ set -e
 # ip route add 172.31.0.2 dev eth0
 
 # 3) 再來才能指定 default gateway 為 172.31.0.2
-ip route add default via 192.168.100.2 dev eth0
+ip route add default via 172.30.0.2 dev eth0
 
 # egress TBF for 雙向
 tc qdisc del dev eth0 root 2>/dev/null || true
