@@ -34,8 +34,8 @@ async function httpClient(options, data = null) {
 // Example usage
 (async () => {
   const options = {
-    hostname: process.env.GATEWAY_HOST,
-    port: process.env.GATEWAY_PORT,
+    hostname: "localhost",
+    port: 7011,
     path: '/iot-test',
     method: 'GET',
     headers: {
