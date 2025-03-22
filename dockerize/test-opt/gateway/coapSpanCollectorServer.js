@@ -1,7 +1,7 @@
 const coap = require('coap');
 const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
 
-function startCoapSpanCollector(port) {
+function startCoapSpanCollector(port, traceMap) {
   return new Promise((resolve, reject) => {
     coap.registerOption("2132", Buffer.from, (buf) => buf.toString());
 
@@ -12,6 +12,7 @@ function startCoapSpanCollector(port) {
         try {
           // 取得 IoT 裝置上傳的 span
           const spanData = JSON.parse(req.payload.toString());
+          spanData.traceId = traceMap.get(spanData.traceId);
           // console.log('Received Span from CoAP device:', spanData);
 
           // 轉發給 span-handler

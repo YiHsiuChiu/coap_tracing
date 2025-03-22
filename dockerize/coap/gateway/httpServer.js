@@ -8,9 +8,8 @@ function startHttpServer(port) {
     const server = http.createServer(async (req, res) => {
       // console.log('Gateway HTTP received:', req.method, req.url);
       try {
-        const span = new Span('Gateway-HTTP', req.headers.traceparent);
-        
         if (req.url.startsWith('/iot-test')) {
+          const span = new Span('Gateway-HTTP', req.headers.traceparent);
           const coapOpts = {
             hostname: process.env.IOT_SERVER_A_HOST,
             port: process.env.IOT_SERVER_A_PORT,

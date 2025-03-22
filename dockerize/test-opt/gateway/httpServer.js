@@ -8,9 +8,9 @@ function startHttpServer(port, traceMap) {
     const server = http.createServer(async (req, res) => {
       // console.log('Gateway HTTP received:', req.method, req.url);
       try {
-        const span = new Span('Gateway-HTTP', req.headers.traceparent);
         
         if (req.url.startsWith('/iot-test')) {
+          const span = new Span('Gateway-HTTP', req.headers.traceparent);
           const coapOpts = {
             hostname: process.env.IOT_SERVER_A_HOST,
             port: process.env.IOT_SERVER_A_PORT,
@@ -25,18 +25,20 @@ function startHttpServer(port, traceMap) {
           // if (req.headers.tracestate) {
           //   coapOpts.options.push({ name: "2104", value: req.headers.tracestate });
           // }
+          traceMap.set(span.getTraceId().slice(-8), span.getTraceId());
           const coapResp = await coapRequest(coapOpts);
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end(`Got from CoAP Server: ${coapResp}`);
+          span.addEndTime();
+          span.logSpan();
+          // 將 gateway 自身的 span 發送給 span-handler
+          await sendHttpSpan(span); 
         } else {
           // 預設行為
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end('Gateway HTTP OK');
         }
-        span.addEndTime();
-        span.logSpan();
-        // 將 gateway 自身的 span 發送給 span-handler
-        await sendHttpSpan(span); 
+        
       } catch (err) {
         console.error('Gateway HTTP error:', err);
         res.writeHead(500);
