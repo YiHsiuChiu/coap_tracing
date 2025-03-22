@@ -16,7 +16,7 @@ function startHTTPSpanCollector(port) {
           try {
             const spanData = JSON.parse(body);
             // console.log('[Gateway - HTTP Collector] Received Span:', spanData);
-            await sendHttpSpan();
+            await sendHttpSpan(spanData);
 
             res.writeHead(200, { 'Content-Type': 'text/plain' });
             res.end('OK');

@@ -1,42 +1,42 @@
-const http = require('http');
-const Span = require('./utils/span.js');
-const { snedHttpRequest } = require('./utils/httpReq.js');
-const { sendHttpSpan } = require('./utils/sendHttpSpan.js');
+const http = require("http");
+const Span = require("./utils/span.js");
+const { snedHttpRequest } = require("./utils/httpReq.js");
+const { sendHttpSpan } = require("./utils/sendHttpSpan.js");
 
 function startHttpServer(port) {
   return new Promise((resolve, reject) => {
     const server = http.createServer(async (req, res) => {
       // console.log('[Gateway] Received request:', req.method, req.url);
       try {
-        const span = new Span('Gateway-HTTP', req.headers.traceparent);
-        
-        if (req.url.startsWith('/iot-test')) {
+        if (req.url.startsWith("/iot-test")) {
+          const span = new Span("Gateway-HTTP", req.headers.traceparent);
           const forwardOptions = {
             hostname: process.env.IOT_SERVER_A_HOST,
             port: process.env.IOT_SERVER_A_PORT,
             method: req.method,
-            path: '/test',
+            path: "/test",
             headers: {
               ...req.headers,
-              traceparent: span.getTraceParent()
-            }
+              traceparent: span.getTraceParent(),
+            },
           };
-          
+
           const httpResp = await snedHttpRequest(forwardOptions);
-          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.writeHead(200, { "Content-Type": "text/plain" });
           res.end(`Got from IoT Server: ${httpResp}`);
+          span.addEndTime();
+          span.logSpan();
+          // 將 gateway 自身的 span 發送給 span-handler
+          await sendHttpSpan(span);
         } else {
           // 預設行為
-          res.writeHead(200, { 'Content-Type': 'text/plain' });
-          res.end('Gateway HTTP OK');
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          res.end("Gateway HTTP OK");
         }
-        span.addEndTime();
-        // 將 gateway 自身的 span 發送給 span-handler
-        await sendHttpSpan(span); 
       } catch (err) {
-        console.error('Gateway HTTP error:', err);
+        console.error("Gateway HTTP error:", err);
         res.writeHead(500);
-        res.end('Internal Server Error');
+        res.end("Internal Server Error");
       }
     });
 
@@ -45,7 +45,7 @@ function startHttpServer(port) {
       resolve();
     });
 
-    server.on('error', reject);
+    server.on("error", reject);
   });
 }
 

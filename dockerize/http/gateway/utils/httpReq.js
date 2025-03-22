@@ -16,7 +16,7 @@ async function snedHttpRequest(options) {
       });
   
       req.on('error', reject);
-      req.write("i am body");
+      // req.write("i am body");
       req.end();
     });
   }

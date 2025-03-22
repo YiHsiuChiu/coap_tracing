@@ -15,8 +15,9 @@ const serverA = http.createServer(async (req, res) => {
     // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.write(`a`);
-    res.end(`a`);
+    res.end();
     span.addEndTime();
+    span.logSpan();
     await sendSpanToGateway(span).catch(err => console.error("Failed sending span:", err));
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
