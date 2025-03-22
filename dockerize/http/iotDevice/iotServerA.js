@@ -17,7 +17,7 @@ const serverA = http.createServer(async (req, res) => {
     res.write(`a`);
     res.end();
     span.addEndTime();
-    span.logSpan();
+    // span.logSpan();
     await sendSpanToGateway(span).catch(err => console.error("Failed sending span:", err));
   } else {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
