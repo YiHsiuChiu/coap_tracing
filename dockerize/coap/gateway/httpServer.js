@@ -26,14 +26,15 @@ function startHttpServer(port) {
           const coapResp = await coapRequest(coapOpts);
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end(`Got from CoAP Server: ${coapResp}`);
+          span.addEndTime();
+          span.logSpan();
+          // 將 gateway 自身的 span 發送給 span-handler
+          await sendHttpSpan(span); 
         } else {
           // 預設行為
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.end('Gateway HTTP OK');
         }
-        span.addEndTime();
-        // 將 gateway 自身的 span 發送給 span-handler
-        await sendHttpSpan(span); 
       } catch (err) {
         console.error('Gateway HTTP error:', err);
         res.writeHead(500);
