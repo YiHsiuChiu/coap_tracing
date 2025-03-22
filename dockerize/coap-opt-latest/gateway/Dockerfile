@@ -8,8 +8,8 @@ COPY . .
 RUN apk add --no-cache iproute2 curl \
     && npm install --production
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint-opt.sh /entrypoint-opt.sh
+RUN chmod +x /entrypoint-opt.sh
 
 # CMD ["node", "gateway.js"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint-opt.sh"]

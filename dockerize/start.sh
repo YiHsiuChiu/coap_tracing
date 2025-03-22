@@ -8,8 +8,11 @@ set -e
 # LAT="400ms"
 
 echo "1) Starting Docker Compose..."
-docker compose -f ./coap/docker-compose.yaml up -d --build
-docker compose -f ./http/docker-compose.yaml up -d --build
+docker compose -f ./coap/docker-compose.yaml build --no-cache
+docker compose -f ./http/docker-compose.yaml build --no-cache
+
+docker compose -f ./coap/docker-compose.yaml up -d
+docker compose -f ./http/docker-compose.yaml up -d
 
 # echo "2) Finding Bridge Interface for $NETWORK_NAME..."
 # # 取得 Network ID

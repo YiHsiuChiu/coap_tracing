@@ -7,8 +7,8 @@ COPY . .
 # 安裝 tc 相關指令
 RUN apk add --no-cache iproute2 curl
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint-http.sh /entrypoint-http.sh
+RUN chmod +x /entrypoint-http.sh
 
 # CMD ["node", "gateway.js"]
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint-http.sh"]

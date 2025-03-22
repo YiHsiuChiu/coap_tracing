@@ -25,7 +25,7 @@ function startHttpServer(port) {
           res.writeHead(200, { "Content-Type": "text/plain" });
           res.end(`Got from IoT Server: ${httpResp}`);
           span.addEndTime();
-          span.logSpan();
+          // span.logSpan();
           // 將 gateway 自身的 span 發送給 span-handler
           await sendHttpSpan(span);
         } else {
