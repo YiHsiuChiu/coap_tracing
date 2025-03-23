@@ -71,7 +71,7 @@ services:
     ports:
       - "3333:3333"
     volumes:
-      - ./data:/app
+      - coap-span-data:/app
 
 networks:
   coap-iot-network:
@@ -86,5 +86,5 @@ networks:
     driver: bridge
   
 
-# volumes:
-#   coap-span-data:
+volumes:
+  coap-span-data:
