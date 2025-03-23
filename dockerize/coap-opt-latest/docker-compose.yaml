@@ -71,7 +71,7 @@ services:
     ports:
       - "3333:3333"
     volumes:
-      - ./data:/app
+      - ./data:/app/data
 
 networks:
   coap-iot-network:
