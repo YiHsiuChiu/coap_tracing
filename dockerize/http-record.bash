@@ -8,7 +8,7 @@ IOT_OUTPUT_FILE="iot-stats.csv"
 GATEWAY_OUTPUT_FILE="gateway-stats.csv"
 # 設定抽樣間隔（秒）與總持續時間（秒）
 INTERVAL=1
-DURATION=60
+DURATION=70
 
 # 初始化結果檔案（加上 header）
 echo "timestamp,cpu_percent,mem_usage_mib" > "$IOT_OUTPUT_FILE"
