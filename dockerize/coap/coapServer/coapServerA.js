@@ -29,7 +29,7 @@ const serverA = coap.createServer(async (req, res) => {
 
     const traceparentOption = req.options.find(opt => opt.name === '2076');
     const traceparent = traceparentOption ? traceparentOption.value.toString() : null;
-    const span = new Span('Server A', traceparent);
+    const span = new Span('IoT-Server-A', traceparent);
     // console.log(`Server A received request: ${req.url}`);
 
     // random delay (300-1000ms)

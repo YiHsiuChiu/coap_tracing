@@ -29,7 +29,7 @@ const serverA = coap.createServer(async (req, res) => {
 
     const traceparentOption = req.options.find(opt => opt.name === '2132');
     const traceId = traceparentOption ? traceparentOption.value.toString() : null;
-    const span = new ISpan('Server A', traceId ,req._packet.token.toString('hex'));
+    const span = new ISpan('IoT-Server-A', traceId ,req._packet.token.toString('hex'));
     // console.log(`Server A received request: ${req.url}`);
 
     // random delay (300-1000ms)

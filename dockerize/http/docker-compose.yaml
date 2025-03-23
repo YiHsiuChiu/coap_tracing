@@ -70,7 +70,7 @@ services:
     ports:
       - "4444:4444"
     volumes:
-      - http-span-data:/app
+      - ./data:/app
 
 networks:
   http-iot-network:
@@ -84,5 +84,5 @@ networks:
   http-tracing-network:
     driver: bridge
 
-volumes:
-  http-span-data:
+# volumes:
+#   http-span-data:
