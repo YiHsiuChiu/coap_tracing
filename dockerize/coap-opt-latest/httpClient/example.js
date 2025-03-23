@@ -16,7 +16,7 @@ async function httpClient(options, data = null) {
       res.on('data', chunk => responseData += chunk);
       res.on('end', () => {
         span.addEndTime();
-        span.logSpan();
+        // span.logSpan();
         sendHttpSpan(span).catch(err => console.error("Failed sending span:", err));
         resolve({
           status: res.statusCode,
@@ -45,7 +45,7 @@ async function httpClient(options, data = null) {
 
   try {
     const response = await httpClient(options);
-    console.log('HTTP Client received response:', response);
+    // console.log('HTTP Client received response:', response);
   } catch (error) {
     console.error('HTTP Client Error:', error);
   }
