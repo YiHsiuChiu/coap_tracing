@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.SPAN_HANDLER_PORT;
-const logFilePath = path.join(__dirname, 'spans.json');
+const logFilePath = path.join(__dirname, './data/spans.json');
 
 
 if (!fs.existsSync(logFilePath)) {
