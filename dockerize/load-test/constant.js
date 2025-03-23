@@ -1,15 +1,15 @@
 import http from "k6/http";
-import { check, sleep } from "k6";
+import { check } from "k6";
 import { randomBytes } from "k6/crypto";
 export const options = {
   scenarios: {
     constant_rate_test: {
       executor: "constant-arrival-rate",
-      rate: 5,  // RPS
+      rate: 10,  // RPS
       timeUnit: "1s",
       duration: "1m",
-      preAllocatedVUs: 1,
-      maxVUs: 5,
+      preAllocatedVUs: 10,
+      maxVUs: 50,
     },
   },
 };
@@ -29,6 +29,4 @@ export default function () {
     },
   });
   check(res, { "status 200": (r) => r.status === 200 });
-
-  sleep(1);
 }
