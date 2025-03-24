@@ -3,6 +3,11 @@ import { check } from "k6";
 import { randomBytes } from "k6/crypto";
 
 const RPS = __ENV.RPS ? parseInt(__ENV.RPS) : 5;
+function toHex(arrayBuffer) {
+  return Array.from(new Uint8Array(arrayBuffer))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 
 export const options = {
   scenarios: {
@@ -11,14 +16,18 @@ export const options = {
       rate: RPS,
       timeUnit: "1s",
       duration: "1m",
-      preAllocatedVUs: RPS+5,
+      preAllocatedVUs: RPS + 5,
       maxVUs: 100,
     },
   },
 };
 export default function () {
-  const traceId = randomBytes(16, "hex");
-  const spanId = randomBytes(8, "hex");
+  //   const traceId = randomBytes(16, "hex");
+  const rawTraceId = randomBytes(16);
+  const traceId = toHex(rawTraceId); // 手動轉成 Hex 字串
+  //   const spanId = randomBytes(8, "hex");
+  const rawSpanId = randomBytes(8);
+  const spanId = toHex(rawSpanId);
   const traceHeader = `00-${traceId}-${spanId}-01`;
 
   const gatewayHost = __ENV.GATEWAY_HOST;
