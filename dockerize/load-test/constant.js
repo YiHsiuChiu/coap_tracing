@@ -1,15 +1,18 @@
 import http from "k6/http";
 import { check } from "k6";
 import { randomBytes } from "k6/crypto";
+
+const RPS = __ENV.RPS ? parseInt(__ENV.RPS) : 5;
+
 export const options = {
   scenarios: {
     constant_rate_test: {
       executor: "constant-arrival-rate",
-      rate: 50,  // RPS
+      rate: RPS,
       timeUnit: "1s",
       duration: "1m",
-      preAllocatedVUs: 20,
-      maxVUs: 80,
+      preAllocatedVUs: RPS+5,
+      maxVUs: 100,
     },
   },
 };
