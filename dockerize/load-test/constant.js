@@ -5,11 +5,11 @@ export const options = {
   scenarios: {
     constant_rate_test: {
       executor: "constant-arrival-rate",
-      rate: 10,  // RPS
+      rate: 50,  // RPS
       timeUnit: "1s",
       duration: "1m",
-      preAllocatedVUs: 10,
-      maxVUs: 50,
+      preAllocatedVUs: 20,
+      maxVUs: 80,
     },
   },
 };
