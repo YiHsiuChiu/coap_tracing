@@ -16,7 +16,7 @@ export const options = {
       rate: RPS,
       timeUnit: "1s",
       duration: "1m",
-      preAllocatedVUs: RPS + 5,
+      preAllocatedVUs: Math.min(RPS * 2, 100),
       maxVUs: 500,
     },
   },
