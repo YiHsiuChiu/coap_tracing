@@ -34,7 +34,7 @@ async function httpClient(options, data = null) {
 // Example usage
 (async () => {
   const options = {
-    hostname: "localhost",
+    hostname: "192.168.0.152",
     port: 3000,
     path: '/iot-test',
     method: 'GET',
@@ -44,9 +44,9 @@ async function httpClient(options, data = null) {
   };
 
   try {
-    console.log('HTTP Client sending request:', options);
+    // console.log('HTTP Client sending request:', options);
     const response = await httpClient(options);
-    console.log('HTTP Client received response:', response);
+    // console.log('HTTP Client received response:', response);
   } catch (error) {
     console.error('HTTP Client Error:', error);
   }

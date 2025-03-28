@@ -11,8 +11,8 @@ function startHttpServer(port) {
         if (req.url.startsWith('/iot-test')) {
           const span = new Span('Gateway-HTTP', req.headers.traceparent);
           const coapOpts = {
-            hostname: "localhost",
-            port: 5666,
+            hostname: "192.168.0.151",
+            port: 3002,
             method: 'GET',
             pathname: '/test',
             options: []

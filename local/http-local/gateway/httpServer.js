@@ -11,7 +11,7 @@ function startHttpServer(port) {
         if (req.url.startsWith("/iot-test")) {
           const span = new Span("Gateway-HTTP", req.headers.traceparent);
           const forwardOptions = {
-            hostname: "localhost",
+            hostname: "192.168.0.151",
             port: 4002,
             method: req.method,
             path: "/test",

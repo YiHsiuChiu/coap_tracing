@@ -1,7 +1,7 @@
 const coap = require('coap');
 const Span = require('./utils/span.js');
 // const sleep = require('sleep-promise');
-const SERVER_A_PORT = process.env.IOT_SERVER_A_PORT;
+const SERVER_A_PORT = 3002;
 
 function sendSpan(spanData) {
   return new Promise((resolve, reject) => {

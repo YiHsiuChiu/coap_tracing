@@ -4,8 +4,8 @@ async function sendSpanToGateway(span) {
     const data = JSON.stringify(span);
 
     const options = {
-      hostname: "localhost",
-      port: 4000,
+      hostname: "192.168.0.152",
+      port: 4001,
       path: "/span",
       method: "POST",
       headers: {
