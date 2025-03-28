@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 5555;
+const PORT = 4444;
 const logFilePath = path.join(__dirname, '../data','spans.json');
 
 

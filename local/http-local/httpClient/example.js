@@ -34,7 +34,7 @@ async function httpClient(options, data = null) {
 // Example usage
 (async () => {
   const options = {
-    hostname: "localhost",
+    hostname: "192.168.0.152",
     port: 4000,
     path: '/iot-test',
     method: 'GET',
