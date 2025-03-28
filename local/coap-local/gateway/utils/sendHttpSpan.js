@@ -4,7 +4,7 @@ async function sendHttpSpan(spanData) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify(spanData);
     const options = {
-      hostname: "192.168.0.153",
+      hostname: "localhost",
       port: 5555,
       path: '/span',
       method: 'POST',

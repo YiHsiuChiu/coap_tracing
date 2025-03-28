@@ -6,7 +6,7 @@ const SERVER_A_PORT = 3002;
 function sendSpan(spanData) {
   return new Promise((resolve, reject) => {
     const req = coap.request({
-      hostname: "localhost",
+      hostname: "192.168.0.152",
       port: 3001,
       method: 'POST',
       pathname: '/span',
