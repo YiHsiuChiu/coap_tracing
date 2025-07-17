@@ -1,7 +1,13 @@
 const http = require('http');
-const Span = require('./span.js');
+const Span = require('../span/span.js');
 
-function sendSpan(span, host = 'localhost', port = 3001) {
+const gatewayIp = 'localhost';
+const gatewayPort = 3000;
+const tracingBackendIp = 'localhost';
+const tracingBackendPort = 3001;
+const tracestateContent = ''; // Optional, can add custom trace state if needed
+
+function sendSpan(span, host = tracingBackendIp, port = tracingBackendPort) {
   return new Promise((resolve, reject) => {
       const data = JSON.stringify(span);
 
@@ -52,7 +58,7 @@ function httpClient(options, data = null) {
     options.headers = {
       ...options.headers,
       traceparent: span.getTraceParent(),
-      tracestate: 'rojo=00f067aa0ba902b7,congo=t61rcWkgMzE' // Optional, can add custom trace state if needed
+      tracestate: tracestateContent // Optional, can add custom trace state if needed
     };
 
     const req = http.request(options, (res) => {
@@ -88,8 +94,8 @@ function httpClient(options, data = null) {
 // Example usage
 (async () => {
   const options = {
-    hostname: 'localhost',
-    port: 3000,
+    hostname: gatewayIp,
+    port: gatewayPort,
     path: '/',
     method: 'GET',
     headers: {

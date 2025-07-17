@@ -1,9 +1,14 @@
 const http = require('http');
 const coap = require('coap');
-const Span = require('./span.js');
+const Span = require('../span/span.js');
 
-const HTTP_PORT = 3000; // Port number for the http server
-const COAP_PORT = 3002; // Port number for the coap server (for collecting spans)
+const serverIp = 'localhost';
+const serverPort = 5683;
+const tracingBackendIp = 'localhost';
+const tracingBackendPort = 3001;
+
+const HTTP_PORT = 3000;
+const COAP_SPAN_PORT = 3002;
 
 function toBinary(text) {
   return Buffer.from(text);
@@ -13,10 +18,9 @@ function toString(data) {
   return data.toString()
 }
 
-coap.registerOption("65000", toBinary, toString) // traceparent
-coap.registerOption("65001", toBinary, toString) // tracestate
+coap.registerOption("2132", toBinary, toString) // traceId
 
-function sendSpan(span, host = 'localhost', port = 3001) {
+function sendSpan(span, host = tracingBackendIp, port = tracingBackendPort) {
   return new Promise((resolve, reject) => {
       const data = JSON.stringify(span);
 
@@ -58,6 +62,8 @@ function sendSpan(span, host = 'localhost', port = 3001) {
   });
 }
 
+let traceMap = new Map();
+
 // Create an HTTP server
 const server = http.createServer((httpReq, httpRes) => {
   console.log('received a request:', httpReq.method, httpReq.url);
@@ -76,22 +82,21 @@ const server = http.createServer((httpReq, httpRes) => {
     
     let responseBody = '';
     let span = new Span('Gateway', httpReq.headers.traceparent);
-    
+
     // Forward the request to the CoAP server
     const coapReq = coap.request({
-      hostname: 'localhost',
-      port: 5683,
+      hostname: serverIp,
+      port: serverPort,
       method: httpReq.method,
       pathname: httpReq.url,
+      token: Buffer.from(span.getSpanId(), 'hex'),
+      options: {
+        '2132': span.getTraceId().slice(-8), // traceparent
+      },
     });
 
-    // append trace context headers if they are not empty
-    if (httpReq.headers.traceparent) {
-      coapReq.setOption("65000", span.getTraceParent()); // traceparent
-    }
-    if (httpReq.headers.tracestate) {
-      coapReq.setOption("65001", httpReq.headers.tracestate); // tracestate
-    }
+    traceMap.set(span.getTraceId().slice(-8), span.getTraceId());
+    // coapReq.setOption("65002", span.getTraceId().slice(-8)); // traceparent
 
     coapReq.on('response', (coapRes) => {
       console.log('get response:', coapRes.payload.toString());
@@ -122,11 +127,12 @@ server.listen(HTTP_PORT, () => {
 const spanCollector = coap.createServer(async(req, res) => {
   if (req.method === 'POST' && req.url === '/span') {
     const span = JSON.parse(req.payload.toString());
+    span.traceId = traceMap.get(span.traceId);
     console.log('received a span from coap devices:', span);
     sendSpan(span);      
   }
 });
 
-spanCollector.listen(COAP_PORT, () => {
-  console.log(`Server A is listening on port ${COAP_PORT}`);
+spanCollector.listen(COAP_SPAN_PORT, () => {
+  console.log(`Server A is listening on port ${COAP_SPAN_PORT}`);
 });

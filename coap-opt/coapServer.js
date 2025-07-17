@@ -1,8 +1,13 @@
 const coap = require('coap');
-const Span = require('./span.js');
+const ISpan = require('./iotSpan.js');
 const sleep = require('sleep-promise');
 
-function sendSpan(span, host = 'localhost', port = 3002) {
+const coapSpanServerIp = 'localhost';
+const coapSpanServerPort = 3002;
+
+const COAP_PORT = 5683;
+
+function sendSpan(span, host = coapSpanServerIp, port = coapSpanServerPort) {
   const req = coap.request({
     hostname: host,
     port: port,
@@ -34,7 +39,7 @@ function sendSpan(span, host = 'localhost', port = 3002) {
 // Server A
 const serverA = coap.createServer(async (req, res) => {
   if (req.method === 'GET') {
-    let span = new Span('Server A', req.options.find(option => option.name == '65000').value.toString());
+    let span = new ISpan('Server A', req.options.find(option => option.name == '2132').value.toString(), req._packet.token.toString('hex'));
     console.log(`Server A received request: ${req.url}`);
     // req.options.forEach((option) => {
     //     if(option.name == '65000'){
@@ -46,7 +51,7 @@ const serverA = coap.createServer(async (req, res) => {
     // }); 
 
     // random delay (300-1000ms)
-    await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
+    // await sleep(Math.floor(Math.random() * (1000 - 300 + 1)) + 300);
 
     // // 呼叫 Server B
     // const reqB = coap.request({
@@ -66,13 +71,13 @@ const serverA = coap.createServer(async (req, res) => {
     // reqB.end();
     res.end(`Hello http client!`);
     span.addEndTime();
-    // span.logSpan();
+    span.logSpan();
     sendSpan(span);
   }
 });
 
-serverA.listen(5683, () => {
-  console.log('Server A is listening on port 5683');
+serverA.listen(COAP_PORT, () => {
+  console.log(`Server A is listening on port ${COAP_PORT}`);
 });
 
 // // Client
