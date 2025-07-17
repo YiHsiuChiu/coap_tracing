@@ -54,6 +54,8 @@ function httpClient(options, data = null) {
   return new Promise((resolve, reject) => {
     let span = new Span('HTTP Client');
 
+    span.setFlag('00'); // Set flag to indicate this is a client span
+
     // Merge headers with Trace Context headers
     options.headers = {
       ...options.headers,
@@ -72,9 +74,11 @@ function httpClient(options, data = null) {
           headers: res.headers,
           body: responseData
         });
-        span.addEndTime();
-        // span.logSpan();
-        sendSpan(span);
+        if(span.getFlag() === '01') {
+          span.addEndTime();
+          // span.logSpan();
+          sendSpan(span);
+        }
       });
     });
 

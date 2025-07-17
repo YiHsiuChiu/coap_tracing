@@ -104,9 +104,11 @@ const server = http.createServer((httpReq, httpRes) => {
       // Respond to the client
       httpRes.writeHead(200, { 'Content-Type': 'text/plain' });
       httpRes.end(responseBody);
-      span.addEndTime();
-      // span.logSpan();
-      sendSpan(span);
+      if(span.getFlag() === '01') {
+        span.addEndTime();
+        // span.logSpan();
+        sendSpan(span);
+      }
     });
 
     coapReq.end();

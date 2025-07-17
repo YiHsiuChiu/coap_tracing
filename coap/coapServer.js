@@ -70,9 +70,12 @@ const serverA = coap.createServer(async (req, res) => {
 
     // reqB.end();
     res.end(`Hello`);
-    span.addEndTime();
-    // span.logSpan();
-    sendSpan(span);
+    if(span.getFlag() === '01') {
+      span.addEndTime();
+      // span.logSpan();
+      sendSpan(span);
+    }
+
   }
 });
 

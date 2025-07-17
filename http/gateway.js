@@ -116,9 +116,11 @@ const server = http.createServer((httpReq, httpRes) => {
         console.log('get user function response:', response);
         httpRes.writeHead(200, { 'Content-Type': 'text/plain' });
         httpRes.end(response.body);
-        span.addEndTime();
-        // span.logSpan();
-        sendSpan(span);
+        if(span.getFlag() === '01') {
+          span.addEndTime();
+          // span.logSpan();
+          sendSpan(span);
+        }
       } catch (error) {
         console.error('Error:', error);
       }

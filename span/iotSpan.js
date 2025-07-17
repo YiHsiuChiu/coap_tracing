@@ -6,12 +6,13 @@ function generateId(size) {
 
 class ISpan {
   constructor(operationName, traceId = null, parentId = null) {
-    this.traceId = traceId ? traceId : generateId(4); 
+    this.traceId = traceId ? traceId.slice(2) : generateId(4); 
     this.spanId = generateId(8); 
     this.parentSpanId = parentId ? parentId : null; 
     this.operationName = operationName; 
     this.startTime = Date.now(); 
     this.endTime = null; 
+    this.flag = traceId ? traceId.slice(0, 2) : "00"; // Default flag, can be modified later
     this.tags = {}; 
     this.logs = []; 
   }
@@ -58,6 +59,14 @@ class ISpan {
 
   getSpanId() {
     return this.spanId;
+  }
+
+  setFlag(flag) {
+    this.flag = flag;
+  }
+
+  getFlag() {
+    return this.flag;
   }
 
 }

@@ -12,6 +12,7 @@ class Span {
     this.operationName = operationName; 
     this.startTime = Date.now(); 
     this.endTime = null; 
+    this.flag = traceparent ? traceparent.slice(53, 55) : '00'; // Default flag, can be modified later
     this.tags = {}; 
     this.logs = []; 
   }
@@ -56,8 +57,20 @@ class Span {
     return this.spanId;
   }
 
+  getTraceId() {
+    return this.traceId;
+  }
+
   getTraceParent() {
-    return `00-${this.traceId}-${this.spanId}-01`;
+    return `00-${this.traceId}-${this.spanId}-${this.flag}`;
+  }
+
+  setFlag(flag) {
+    this.flag = flag;
+  }
+
+  getFlag() {
+    return this.flag;
   }
 
 }

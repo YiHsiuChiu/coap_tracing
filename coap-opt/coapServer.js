@@ -1,5 +1,5 @@
 const coap = require('coap');
-const ISpan = require('./iotSpan.js');
+const ISpan = require('../span/iotSpan.js');
 const sleep = require('sleep-promise');
 
 const coapSpanServerIp = 'localhost';
@@ -39,7 +39,7 @@ function sendSpan(span, host = coapSpanServerIp, port = coapSpanServerPort) {
 // Server A
 const serverA = coap.createServer(async (req, res) => {
   if (req.method === 'GET') {
-    let span = new ISpan('Server A', req.options.find(option => option.name == '2132').value.toString(), req._packet.token.toString('hex'));
+    let span = new ISpan('Server A', req.options.find(option => option.name == '2132').value.toString('hex'), req._packet.token.toString('hex'));
     console.log(`Server A received request: ${req.url}`);
     // req.options.forEach((option) => {
     //     if(option.name == '65000'){
@@ -70,9 +70,11 @@ const serverA = coap.createServer(async (req, res) => {
 
     // reqB.end();
     res.end(`Hello http client!`);
-    span.addEndTime();
-    span.logSpan();
-    sendSpan(span);
+    if(span.getFlag() === '01') {
+      span.addEndTime();
+      span.logSpan();
+      sendSpan(span);
+    }
   }
 });
 

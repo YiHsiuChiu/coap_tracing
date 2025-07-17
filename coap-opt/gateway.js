@@ -91,7 +91,7 @@ const server = http.createServer((httpReq, httpRes) => {
       pathname: httpReq.url,
       token: Buffer.from(span.getSpanId(), 'hex'),
       options: {
-        '2132': span.getTraceId().slice(-8), // traceparent
+        '2132': Buffer.from(span.getFlag() + span.getTraceId().slice(-8), 'hex'), // traceparent
       },
     });
 
@@ -104,9 +104,11 @@ const server = http.createServer((httpReq, httpRes) => {
       // Respond to the client
       httpRes.writeHead(200, { 'Content-Type': 'text/plain' });
       httpRes.end(responseBody);
-      span.addEndTime();
-      // span.logSpan();
-      sendSpan(span);
+      if(span.getFlag() === '01') {
+        span.addEndTime();
+        // span.logSpan();
+        sendSpan(span);
+      }
     });
 
     coapReq.end();
